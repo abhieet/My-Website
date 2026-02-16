@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhijeet Pande | QA Specialist</title>
+    <style>
+        /* --- RESET & VARIABLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        
+        :root {
+            --bg-color: #0e0e0e;
+            --card-bg: #1c1c1c;
+            --text-main: #ffffff;
+            --text-muted: #a1a1a1;
+            --accent: #eeff00; /* Neon Yellow/Green */
+            --accent-glow: 0 0 10px rgba(238, 255, 0, 0.5);
+        }
+
+        body { background-color: var(--bg-color); color: var(--text-main); overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+        .show { opacity: 1; transform: translateY(0); }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; background: rgba(14, 14, 14, 0.95);
+            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #333;
+            backdrop-filter: blur(10px);
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
+        .logo span { color: var(--accent); text-shadow: var(--accent-glow); }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+        .nav-links a:hover { color: var(--accent); text-shadow: var(--accent-glow); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 90vh; display: flex; flex-direction: column; justify-content: center;
+            padding: 0 10%; position: relative;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #0e0e0e 100%);
+        }
+        
+        .hero::after {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none;
+        }
+
+        .hero-content { z-index: 3; animation: fadeInUp 1s ease-out; }
+        .hero h2 { color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .hero h1 { font-size: 4rem; text-transform: uppercase; font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
+        .hero p { max-width: 600px; color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px; }
+        
+        .btn {
+            padding: 15px 40px; background: var(--accent); color: #000; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px; border: none; cursor: pointer;
+            transition: 0.3s; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--accent); }
+
+        /* --- SECTIONS --- */
+        section { padding: 80px 10%; }
+        .section-title { font-size: 2.5rem; text-transform: uppercase; border-left: 5px solid var(--accent); padding-left: 20px; margin-bottom: 50px; }
+
+        /* --- PROJECTS GRID --- */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card { background: var(--card-bg); border: 1px solid #333; transition: 0.3s; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 0 15px rgba(238,255,0,0.1); }
+        
+        .card-img { height: 160px; background: #2a2a2a; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #555; text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; }
+        .card-content { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-content h3 { text-transform: uppercase; margin-bottom: 10px; }
+        .card-content p { color: var(--text-muted); font-size: 0.9rem; flex-grow: 1; }
+        .tag { font-size: 0.75rem; background: #333; padding: 5px 10px; color: #fff; margin-bottom: 10px; display: inline-block; width: fit-content; }
+
+        /* --- SKILLS --- */
+        .skills-container { display: flex; flex-wrap: wrap; gap: 15px; }
+        .skill-pill { background: #1a1a1a; border: 1px solid #333; padding: 10px 25px; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
+        .skill-pill:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px rgba(238,255,0,0.2); }
+
+        /* --- GAME CONTAINER & MODAL --- */
+        #game-section { text-align: center; border-top: 1px solid #333; background: #000; padding: 50px 0; position: relative; }
+        #game-canvas { background: #111; border: 2px solid #333; display: block; margin: 0 auto; max-width: 90%; cursor: pointer; }
+        .game-ui { margin-top: 20px; color: var(--text-muted); font-family: monospace; }
+        .start-msg { color: var(--accent); animation: blink 1s infinite; margin-top: 10px; display: block; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Modal Styles */
+        .game-modal {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(14, 14, 14, 0.95);
+            border: 2px solid var(--accent);
+            padding: 30px;
+            text-align: center;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+        .game-modal h3 { color: #fff; text-transform: uppercase; margin-bottom: 10px; font-size: 1.5rem; }
+        .game-modal p { color: #ccc; margin-bottom: 20px; }
+        .modal-btn {
+            display: block; width: 100%; padding: 10px; margin-bottom: 10px;
+            background: #333; color: #fff; border: 1px solid #555;
+            cursor: pointer; text-transform: uppercase; font-weight: bold;
+            transition: 0.3s;
+        }
+        .modal-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+        /* --- CONTACT SECTION --- */
+        .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        .contact-info { color: #ccc; }
+        .contact-info p { margin-bottom: 20px; font-size: 1.1rem; }
+        .contact-info strong { color: var(--accent); }
+        
+        .contact-form input, .contact-form textarea {
+            width: 100%; background: #222; border: 1px solid #333; color: #fff;
+            padding: 15px; margin-bottom: 20px; font-family: monospace;
+        }
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: var(--accent); outline: none;
+        }
+        
+        /* --- FOOTER --- */
+        footer { background: #050505; padding: 30px 10%; text-align: center; border-top: 1px solid #333; font-size: 0.8rem; opacity: 0.7; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .contact-container { grid-template-columns: 1fr; }
+            section { padding: 50px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">Abhijeet<span>Pande</span></div>
+        <div class="nav-links">
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#skills">Skills</a>
+            <a href="#game-section">Bonus Level</a>
+            <a href="#contact-tab" style="color: var(--accent); border-bottom: 1px solid var(--accent);">Contact Me</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h2>QA Test Engineer Level 2</h2>
+            <h1>Quality Assurance<br>Specialist</h1>
+            <p>Results-driven engineer with 4.3 years of experience. AAA Titles. Mobile, PC, & Console. Currently ensuring gameplay perfection at EA Sports.</p>
+            <a href="#contact-tab" class="btn">Establish Comms</a>
+        </div>
+    </header>
+
+    <section id="projects">
+        <h2 class="section-title hidden">Mission Log</h2>
+        <div class="projects-grid">
+            <div class="card hidden">
+                <div class="card-img" style="color:var(--accent);">Battle Royale</div>
+                <div class="card-content">
+                    <h3>Military Sim & FPS (EA)</h3>
+                    <span class="tag">Jul 2025 - Present</span>
+                    <p>Testing large-scale multiplayer FPS for gameplay, performance, and network issues.</p>
+                </div>
+            </div>
+            <div class="card hidden" style="transition-delay: 100ms;">
+                <div class="card-img">Simulation</div>
+                <div class="card-content">
+                    <h3>3D Simulation Game</h3>
+                    <span class="tag">Jul 2024 - Jun 2025</span>
+                    <p>Validated 3D graphics, animations, and farming mechanics. Tested social features for trading.</p>
+                </div>
+            </div>
+            <div class="card hidden" style="transition-delay: 200ms;">
+                <div class="card-img">Racing</div>
+                <div class="card-content">
+                    <h3>Arcade Racing</h3>
+                    <span class="tag">Feb 2024 - Jul 2024</span>
+                    <p>Tested virtual cycling game with dynamic racing tracks and fitness integration.</p>
+                </div>
+            </div>
+            <div class="card hidden">
+                <div class="card-img">Arena</div>
+                <div class="card-content">
+                    <h3>PvP Team Deathmatch</h3>
+                    <span class="tag">Nov 2023 - Feb 2024</span>
+                    <p>QA for PvP and clan-based combat systems in a multiplayer RPG environment.</p>
+                </div>
+            </div>
+            <div class="card hidden" style="transition-delay: 100ms;">
+                <div class="card-img">Strategy</div>
+                <div class="card-content">
+                    <h3>Strategy & RPG</h3>
+                    <span class="tag">Jul 2023 - Nov 2023</span>
+                    <p>Tested complex strategy-RPG mechanics with multiple competitive modes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <h2 class="section-title hidden">Experience & Education</h2>
+        <div style="border-left: 2px solid #333; padding-left: 30px;">
+            <div class="hidden" style="margin-bottom: 40px;">
+                <h3 style="color: var(--accent);">QA Test Engineer Level 2</h3>
+                <p style="color: #fff; font-weight: bold;">Electronic Arts (EA Sports) | Hyderabad</p>
+                <p style="color: #777; margin-bottom: 10px;">Jun 2025 - Present</p>
+                <ul style="color: #ccc; font-size: 0.9rem; list-style: disc; padding-left: 20px;">
+                    <li>Conduct AAA game title testing across console and PC.</li>
+                    <li>Live event testing for online multiplayer and seasonal events.</li>
+                    <li>Monitor live game servers and analyze player data.</li>
+                </ul>
+            </div>
+            <div class="hidden" style="margin-bottom: 40px;">
+                <h3 style="color: var(--accent);">QA Test Engineer</h3>
+                <p style="color: #fff; font-weight: bold;">GlobalStep | Pune</p>
+                <p style="color: #777; margin-bottom: 10px;">Aug 2021 - May 2025</p>
+                <ul style="color: #ccc; font-size: 0.9rem; list-style: disc; padding-left: 20px;">
+                    <li>Designed sanity, functional, and regression test cases (Mobile & PC).</li>
+                    <li>Reduced post-release defect rates by 15% through high-severity bug tracking.</li>
+                    <li>Led database verification ensuring zero downtime during live updates.</li>
+                </ul>
+            </div>
+             <div class="hidden">
+                <h3 style="color: var(--accent);">Education</h3>
+                <div style="margin-top: 10px;">
+                    <p style="color: #fff; font-weight: bold;">Bachelor of Computer Applications (BCA)</p>
+                    <p style="color: #777;">SOABU Amravati University | 2018 - 2021</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" style="background: #111;">
+        <h2 class="section-title hidden">Loadout / Skills</h2>
+        <div class="skills-container hidden">
+            <div class="skill-pill">Jira</div>
+            <div class="skill-pill">TestRail</div>
+            <div class="skill-pill">Confluence</div>
+            <div class="skill-pill">Postman</div>
+            <div class="skill-pill">Figma</div>
+            <div class="skill-pill">Functional Testing</div>
+            <div class="skill-pill">Regression</div>
+            <div class="skill-pill">Network Testing</div>
+            <div class="skill-pill">Platform Compliance</div>
+            <div class="skill-pill">iOS / Android</div>
+            <div class="skill-pill">G-Suite</div>
+        </div>
+    </section>
+
+    <section id="game-section">
+        <h2 class="section-title" style="text-align: center; border: none; color: var(--accent);">Bonus Level: Offline Runner</h2>
+        <p style="margin-bottom: 20px; color: #777;">Press SPACE to Jump. Avoid the Glitches.</p>
+        
+        <canvas id="game-canvas" width="600" height="200"></canvas>
+        
+        <div class="game-ui">
+            <span>SCORE: <span id="score">0</span></span>
+            <span class="start-msg" id="start-msg">PRESS SPACE TO START</span>
+        </div>
+
+        <div id="gameOverModal" class="game-modal">
+            <h3 style="color: #ff3333;">Mission Failed</h3>
+            <p>You hit a glitch. What is your next move?</p>
+            <button class="modal-btn" onclick="retryGame()">Retry Mission</button>
+            <button class="modal-btn" onclick="goToContact()">Establish Comms (Contact)</button>
+        </div>
+    </section>
+
+    <section id="contact-tab" style="background: linear-gradient(to top, #000, #111); padding-bottom: 100px;">
+        <h2 class="section-title hidden">Establish Comms</h2>
+        <div class="contact-container hidden">
+            <div class="contact-info">
+                <h3 style="color: var(--accent); margin-bottom: 20px; text-transform: uppercase;">Direct Line</h3>
+                <p><strong>Email:</strong> abhijeetpande80@gmail.com</p>
+                <p><strong>Phone:</strong> +91-7755-999-216</p>
+                <p><strong>Base:</strong> Maharashtra, India</p>
+                
+                <div style="margin-top: 30px;">
+                    <a href="mailto:abhijeetpande80@gmail.com" class="btn">Send Signal</a>
+                </div>
+            </div>
+            
+            <form class="contact-form" id="contactForm">
+                <input type="text" id="senderName" placeholder="Operative Name" required>
+                <input type="email" id="senderEmail" placeholder="Comms Frequency (Email)" required>
+                <textarea id="senderMsg" rows="5" placeholder="Mission Briefing" required></textarea>
+                <button type="submit" class="btn" style="width: 100%; border: 1px solid var(--accent);">Transmit Signal</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Abhijeet Pande. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // --- SCROLL ANIMATION OBSERVER ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        });
+        document.querySelectorAll('.hidden').forEach((el) => observer.observe(el));
+
+        // --- CONTACT FORM LOGIC ---
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('senderName').value;
+            const email = document.getElementById('senderEmail').value;
+            const msg = document.getElementById('senderMsg').value;
+            const subject = `Mission Briefing from ${name}`;
+            const body = `Operative Name: ${name}%0D%0AComms Frequency: ${email}%0D%0A%0D%0A--- Mission Briefing ---%0D%0A${msg}`;
+            window.location.href = `mailto:abhijeetpande80@gmail.com?subject=${subject}&body=${body}`;
+            alert("Comms Link Established. Opening your email client...");
+            this.reset();
+        });
+
+        // --- GAME LOGIC ---
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const msgEl = document.getElementById('start-msg');
+        const modalEl = document.getElementById('gameOverModal');
+
+        let gameRunning = false;
+        let score = 0;
+        let animationId;
+        let frame = 0;
+
+        const dino = { x: 50, y: 150, width: 30, height: 30, dy: 0, jumpPower: -12, gravity: 0.8, grounded: true };
+        let obstacles = [];
+
+        function drawDino() {
+            ctx.save();
+            ctx.translate(dino.x + 15, dino.y + 15);
+            ctx.scale(-1, 1); 
+            let bounce = 0;
+            if (dino.grounded && gameRunning) {
+                bounce = Math.sin(frame * 0.5) * 3; 
+            }
+            ctx.font = "30px serif";
+            ctx.fillText("🏃", -15, 12 + bounce);
+            ctx.restore();
+        }
+
+        function createObstacle() {
+            const isTree = Math.random() > 0.5;
+            const type = isTree ? 'tree' : 'rock';
+            const height = isTree ? 35 : 20; 
+            const width = 30;
+            obstacles.push({ x: canvas.width, y: 180 - height, width: width, height: height, type: type });
+        }
+
+        function drawObstacles() {
+            obstacles.forEach(obs => {
+                ctx.font = "30px serif";
+                const sprite = obs.type === 'tree' ? '🌲' : '🪨';
+                const yOffset = obs.type === 'tree' ? 28 : 22;
+                ctx.fillText(sprite, obs.x, obs.y + yOffset);
+            });
+        }
+
+        function update() {
+            if (!gameRunning) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, 180);
+            ctx.lineTo(canvas.width, 180);
+            ctx.stroke();
+
+            dino.dy += dino.gravity;
+            dino.y += dino.dy;
+
+            if (dino.y > 150) {
+                dino.y = 150;
+                dino.dy = 0;
+                dino.grounded = true;
+            }
+
+            drawDino();
+
+            if (frame % 100 === 0) createObstacle();
+            
+            obstacles.forEach((obs, index) => {
+                obs.x -= 5; 
+                if (dino.x < obs.x + obs.width &&
+                    dino.x + dino.width > obs.x &&
+                    dino.y < obs.y + obs.height &&
+                    dino.height + dino.y > obs.y) {
+                        gameOver();
+                }
+                if (obs.x + obs.width < 0) obstacles.splice(index, 1);
+            });
+
+            drawObstacles();
+
+            score++;
+            scoreEl.innerText = Math.floor(score / 10);
+            frame++;
+            animationId = requestAnimationFrame(update);
+        }
+
+        function jump() {
+            if (dino.grounded) {
+                dino.dy = dino.jumpPower;
+                dino.grounded = false;
+            }
+            if (!gameRunning && modalEl.style.display !== 'block') startGame();
+        }
+
+        function startGame() {
+            if (gameRunning) return;
+            gameRunning = true;
+            score = 0;
+            frame = 0;
+            obstacles = [];
+            dino.y = 150;
+            msgEl.style.display = 'none';
+            modalEl.style.display = 'none'; // Hide modal
+            update();
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            cancelAnimationFrame(animationId);
+            // Show the Modal
+            modalEl.style.display = 'block';
+        }
+
+        // Functions for Modal Buttons
+        function retryGame() {
+            modalEl.style.display = 'none';
+            startGame();
+        }
+
+        function goToContact() {
+            modalEl.style.display = 'none';
+            document.getElementById('contact-tab').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.code === 'Space') { e.preventDefault(); jump(); }
+        });
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); });
+        canvas.addEventListener('click', (e) => { e.preventDefault(); jump(); });
+
+        ctx.fillStyle = '#333';
+        ctx.font = "20px monospace";
+        ctx.fillText("READY PLAYER ONE?", 200, 100);
+    </script>
+</body>
+</html>
